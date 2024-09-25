@@ -1,6 +1,7 @@
 package com.yordanos.dreamShops.service.product;
 
 import com.yordanos.dreamShops.exceptions.ProductNotFoundException;
+import com.yordanos.dreamShops.exceptions.ResourceNotFoundException;
 import com.yordanos.dreamShops.model.Category;
 import com.yordanos.dreamShops.model.Product;
 import com.yordanos.dreamShops.repository.CategoryRepository;
@@ -49,7 +50,7 @@ public class ProductService implements IProductService {
     @Override
     public Product getProductById(Long id) {
         return productRepository.findById(id)
-                .orElseThrow(()-> new ProductNotFoundException("Product Not Found!"));
+                .orElseThrow(()-> new ResourceNotFoundException("Product Not Found!"));
     }
 
     @Override
