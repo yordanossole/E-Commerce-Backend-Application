@@ -84,7 +84,7 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public List<Product> getProductsByCategoryId(String category) {
+    public List<Product> getProductsByCategoryName(String category) {
         return productRepository.finByCategoryName(category);
     }
 
@@ -95,7 +95,7 @@ public class ProductService implements IProductService {
 
     @Override
     public List<Product> getProductsByCategoryAndBrand(String category, String brand) {
-        return productRepository.finByCategoryNameAndBrand(category, brand);
+        return productRepository.findByCategoryNameAndBrand(category, brand);
     }
 
     @Override
