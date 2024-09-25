@@ -1,6 +1,5 @@
 package com.yordanos.dreamShops.service.product;
 
-import com.yordanos.dreamShops.exceptions.ProductNotFoundException;
 import com.yordanos.dreamShops.exceptions.ResourceNotFoundException;
 import com.yordanos.dreamShops.model.Category;
 import com.yordanos.dreamShops.model.Product;
@@ -56,7 +55,7 @@ public class ProductService implements IProductService {
     @Override
     public void deleteProductById(Long id) {
         productRepository.findById(id).ifPresentOrElse(productRepository::delete,
-                () -> {throw new ProductNotFoundException("Product Not Found!");});
+                () -> {throw new ResourceNotFoundException("Product Not Found!");});
     }
 
     @Override
@@ -64,7 +63,7 @@ public class ProductService implements IProductService {
         return productRepository.findById(productId)
                 .map(existingProduct -> updateExistingProduct(existingProduct, request))
                 .map(productRepository :: save)
-                .orElseThrow(()-> new ProductNotFoundException("Product Not Found!"));
+                .orElseThrow(()-> new ResourceNotFoundException("Product Not Found!"));
     }
 
     private Product updateExistingProduct(Product existingProduct, ProductUpdateRequest request) {
