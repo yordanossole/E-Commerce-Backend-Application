@@ -17,7 +17,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("${api.prifix}/products")
+@RequestMapping("${api.prefix}/products")
 public class ProductController {
     private final IProductService productService;
 
@@ -69,7 +69,7 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/product/by/brand-and-name")
+    @GetMapping("/by/brand-and-name")
     public ResponseEntity<ApiResponse> getProductByBrandAndName(@RequestParam String brand, @RequestParam String name) {
         try {
             List<Product> products = productService.getProductsByBrandAndName(brand, name);
@@ -82,7 +82,7 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/product/by/category-and-brand")
+    @GetMapping("/by/category-and-brand")
     public ResponseEntity<ApiResponse> getProductByCategoryAndBrand(@RequestParam String category, @RequestParam String brand) {
         try {
             List<Product> products = productService.getProductsByCategoryAndBrand(category, brand);
@@ -121,7 +121,7 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/product/{categoryName}/all/products")
+    @GetMapping("{categoryName}/all")
     public ResponseEntity<ApiResponse> getProductByCategory(@PathVariable String categoryName) {
         try {
             List<Product> products = productService.getProductsByCategory(categoryName);
@@ -134,7 +134,7 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/product/count/by/brand-and-name/")
+    @GetMapping("/count/by/brand-and-name/")
     public ResponseEntity<ApiResponse> countProductsByBrandAndName(@RequestParam String brand, @RequestParam String name) {
         try {
             Long count = productService.countProductsByBrandAndName(brand, name);
