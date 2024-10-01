@@ -20,8 +20,10 @@ public class Category {
     private Long id;
     private String name;
 
+    // @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    // When I did the above it deleted all the products of the associated category.
     @JsonIgnore
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "category")
     private List<Product> products;
 
 
