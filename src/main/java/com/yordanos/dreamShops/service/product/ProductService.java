@@ -1,13 +1,19 @@
 package com.yordanos.dreamShops.service.product;
 
+import com.yordanos.dreamShops.dto.ImageDto;
+import com.yordanos.dreamShops.dto.ProductDto;
 import com.yordanos.dreamShops.exceptions.ResourceNotFoundException;
 import com.yordanos.dreamShops.model.Category;
+import com.yordanos.dreamShops.model.Image;
 import com.yordanos.dreamShops.model.Product;
 import com.yordanos.dreamShops.repository.CategoryRepository;
+import com.yordanos.dreamShops.repository.ImageRepository;
 import com.yordanos.dreamShops.repository.ProductRepository;
 import com.yordanos.dreamShops.request.AddProductRequest;
 import com.yordanos.dreamShops.request.ProductUpdateRequest;
+import com.yordanos.dreamShops.service.image.ImageService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +24,8 @@ import java.util.Optional;
 public class ProductService implements IProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final ModelMapper modelMapper;
+    private final ImageRepository imageRepository;
 
     @Override
     public Product addProduct(AddProductRequest request) {
@@ -112,4 +120,22 @@ public class ProductService implements IProductService {
     public Long countProductsByBrandAndName(String brand, String name) {
         return productRepository.countByBrandAndName(brand, name);
     }
+
+    @Override
+    public List<ProductDto> getConvertedProducts(List<Product> products) {
+        return products.stream().map(this::convertToDto).toList();
+    }
+
+    @Override
+    public ProductDto convertToDto(Product product) {
+        ProductDto productDto = modelMapper.map(product, ProductDto.class);
+        List<Image> images = imageRepository.findByProductId(product.getId());
+        List<ImageDto> imageDtos = images.stream()
+                .map(image -> modelMapper.map(image, ImageDto.class))
+                .toList();
+        productDto.setImages(imageDtos);
+        return productDto;
+//        3:27:03
+    }
+
 }

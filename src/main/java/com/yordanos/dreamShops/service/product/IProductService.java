@@ -1,5 +1,6 @@
 package com.yordanos.dreamShops.service.product;
 
+import com.yordanos.dreamShops.dto.ProductDto;
 import com.yordanos.dreamShops.model.Product;
 import com.yordanos.dreamShops.request.AddProductRequest;
 import com.yordanos.dreamShops.request.ProductUpdateRequest;
@@ -18,4 +19,8 @@ public interface IProductService {
     List<Product> getProductsByName(String name);
     List<Product> getProductsByBrandAndName(String brand, String name);
     Long countProductsByBrandAndName(String brand, String name);
+
+    List<ProductDto> getConvertedProducts(List<Product> products);
+
+    ProductDto convertToDto(Product product);
 }
