@@ -5,7 +5,6 @@ import com.yordanos.dreamShops.exceptions.ResourceNotFoundException;
 import com.yordanos.dreamShops.model.Image;
 import com.yordanos.dreamShops.model.Product;
 import com.yordanos.dreamShops.repository.ImageRepository;
-import com.yordanos.dreamShops.repository.ProductRepository;
 import com.yordanos.dreamShops.service.product.IProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

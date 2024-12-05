@@ -11,7 +11,6 @@ import com.yordanos.dreamShops.repository.ImageRepository;
 import com.yordanos.dreamShops.repository.ProductRepository;
 import com.yordanos.dreamShops.request.AddProductRequest;
 import com.yordanos.dreamShops.request.ProductUpdateRequest;
-import com.yordanos.dreamShops.service.image.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;

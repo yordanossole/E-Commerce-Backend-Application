@@ -25,7 +25,7 @@ public class CartService implements ICartService {
 //        BigDecimal totalAmount = cart.getTotalAmount();
 //        cart.setTotalAmount(totalAmount);
 //        return cartRepository.save(cart);
-        return cart; // I think this is enough and it is the only needed
+        return cart; // I think this is enough, and it is the only needed
     }
 
     @Transactional
