@@ -7,6 +7,7 @@ import com.yordanos.dreamShops.model.Product;
 import com.yordanos.dreamShops.repository.ImageRepository;
 import com.yordanos.dreamShops.service.product.IProductService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,6 +22,7 @@ import java.util.List;
 public class ImageService implements IImageService {
     private final ImageRepository imageRepository;
     private final IProductService productService;
+    private final ModelMapper modelMapper;
 
     @Override
     public Image getImageById(Long id) {
@@ -55,11 +57,12 @@ public class ImageService implements IImageService {
                 savedImage.setDownloadUrl(buildDownloadUrl + savedImage.getId());
                 imageRepository.save(savedImage);
 
-                ImageDto imageDto = new ImageDto();
-                imageDto.setId(savedImage.getId());
-                imageDto.setImageName(savedImage.getFileName());
-                imageDto.setDownloadUrl(savedImage.getDownloadUrl());
-                savedImageDtos.add(imageDto);
+//                ImageDto imageDto = new ImageDto();
+//                imageDto.setId(savedImage.getId());
+//                imageDto.setImageName(savedImage.getFileName());
+//                imageDto.setDownloadUrl(savedImage.getDownloadUrl());
+//                savedImageDtos.add(imageDto);
+                savedImageDtos.add(convertToDto(savedImage));
 
             } catch (IOException | SQLException e) {
                 throw new RuntimeException(e.getMessage());
@@ -69,15 +72,20 @@ public class ImageService implements IImageService {
     }
 
     @Override
-    public void updateImage(MultipartFile file, Long imageId) {
+    public Image updateImage(MultipartFile file, Long imageId) {
         Image image = getImageById(imageId);
         try {
             image.setFileName(file.getOriginalFilename());
             image.setFileType(file.getContentType());
             image.setImage(new SerialBlob(file.getBytes()));
-            imageRepository.save(image);
+            return imageRepository.save(image);
         } catch (IOException | SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
+    }
+
+    @Override
+    public ImageDto convertToDto(Image image) {
+        return modelMapper.map(image, ImageDto.class);
     }
 }

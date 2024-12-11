@@ -1,5 +1,6 @@
 package com.yordanos.dreamShops.service.cart;
 
+import com.yordanos.dreamShops.dto.CartItemDto;
 import com.yordanos.dreamShops.exceptions.ResourceNotFoundException;
 import com.yordanos.dreamShops.model.Cart;
 import com.yordanos.dreamShops.model.CartItem;
@@ -8,6 +9,7 @@ import com.yordanos.dreamShops.repository.CartItemRepository;
 import com.yordanos.dreamShops.repository.CartRepository;
 import com.yordanos.dreamShops.service.product.IProductService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -19,9 +21,10 @@ public class CartItemService implements ICartItemService {
     private final CartRepository cartRepository;
     private final IProductService productService;
     private final ICartService cartService;
+    private final ModelMapper modelMapper;
 
     @Override
-    public void addItemToCart(Long cartId, Long productId, int quantity) {
+    public CartItem addItemToCart(Long cartId, Long productId, int quantity) {
         Cart cart = cartService.getCart(cartId);
         Product product = productService.getProductById(productId);
         CartItem cartItem = cart.getItems()
@@ -41,8 +44,8 @@ public class CartItemService implements ICartItemService {
 
         cartItem.setTotalPrice();
         cart.addItem(cartItem);
-        cartItemRepository.save(cartItem);
         cartRepository.save(cart);
+        return cartItemRepository.save(cartItem);
     }
 
     @Override
@@ -82,5 +85,10 @@ public class CartItemService implements ICartItemService {
 
         cart.setTotalAmount(totalAmount);
         cartRepository.save(cart);
+    }
+
+    @Override
+    public CartItemDto converToDto(CartItem cartItem) {
+        return modelMapper.map(cartItem, CartItemDto.class);
     }
 }

@@ -16,7 +16,7 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RestController
-@RequestMapping("{api.prefix}/orders")
+@RequestMapping("${api.prefix}/orders")
 @RequiredArgsConstructor
 public class OrderController {
     private final IOrderService orderService;

@@ -24,6 +24,14 @@ public class ProductController {
 
     // I wrote most of the paths by my self (I used my own naming).
 
+    // this is for test
+    @PostMapping("/add/all")
+    public ResponseEntity<ApiResponse> addProducts(@RequestBody List<AddProductRequest> addProductRequest) {
+        List<Product> products = productService.addProducts(addProductRequest);
+        List<ProductDto> productDtos = productService.getConvertedProducts(products);
+        return ResponseEntity.ok(new ApiResponse("success", productDtos));
+    }
+
     @GetMapping("/all")
     public ResponseEntity<ApiResponse> getAllProducts() {
         List<Product> products = productService.getAllProducts();

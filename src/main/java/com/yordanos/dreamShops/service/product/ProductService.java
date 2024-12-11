@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,6 +43,23 @@ public class ProductService implements IProductService {
         return productRepository.save(createProduct(request, category));
     }
 
+    // for test
+    @Override
+    public List<Product> addProducts(List<AddProductRequest> requests) {
+        List<Product> products = new ArrayList<>();
+        products = requests.stream()
+                .map(request -> {
+                Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategory().getName()))
+                        .orElseGet(() -> {
+                            Category newCategory = new Category(request.getCategory().getName());
+                            return categoryRepository.save(newCategory);
+                        });
+                request.setCategory(category);
+                return createProduct(request, category);
+                }).toList();
+        return productRepository.saveAll(products);
+    }
+    //
     private Product createProduct(AddProductRequest request, Category category) {
         return new Product(
                 request.getName(),

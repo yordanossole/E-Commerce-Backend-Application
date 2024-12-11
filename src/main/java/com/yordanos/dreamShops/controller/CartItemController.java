@@ -1,6 +1,8 @@
 package com.yordanos.dreamShops.controller;
 
+import com.yordanos.dreamShops.dto.CartItemDto;
 import com.yordanos.dreamShops.exceptions.ResourceNotFoundException;
+import com.yordanos.dreamShops.model.CartItem;
 import com.yordanos.dreamShops.response.ApiResponse;
 import com.yordanos.dreamShops.service.cart.ICartItemService;
 import com.yordanos.dreamShops.service.cart.ICartService;
@@ -25,8 +27,9 @@ public class CartItemController {
             if (cartId == null) {
                 cartId = cartService.initializeNewCart();
             }
-            cartItemService.addItemToCart(cartId, productId, quantity);
-            return ResponseEntity.ok(new ApiResponse("Add Item Success", null));
+            CartItem cartItem = cartItemService.addItemToCart(cartId, productId, quantity);
+            CartItemDto cartItemDto = cartItemService.converToDto(cartItem);
+            return ResponseEntity.ok(new ApiResponse("Add Item Success", cartItemDto));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
         }
