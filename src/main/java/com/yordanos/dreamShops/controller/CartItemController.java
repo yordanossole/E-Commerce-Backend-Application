@@ -28,8 +28,8 @@ public class CartItemController {
                 cartId = cartService.initializeNewCart();
             }
             CartItem cartItem = cartItemService.addItemToCart(cartId, productId, quantity);
-            CartItemDto cartItemDto = cartItemService.converToDto(cartItem);
-            return ResponseEntity.ok(new ApiResponse("Add Item Success", cartItemDto));
+//            CartItemDto cartItemDto = cartItemService.convertToDto(cartItem);
+            return ResponseEntity.ok(new ApiResponse("Add Item Success", cartItem));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
         }

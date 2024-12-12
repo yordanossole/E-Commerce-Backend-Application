@@ -2,10 +2,8 @@ package com.yordanos.dreamShops.controller;
 
 import com.yordanos.dreamShops.dto.OrderDto;
 import com.yordanos.dreamShops.exceptions.ResourceNotFoundException;
-import com.yordanos.dreamShops.model.Order;
 import com.yordanos.dreamShops.response.ApiResponse;
 import com.yordanos.dreamShops.service.order.IOrderService;
-import jakarta.validation.ReportAsSingleViolation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

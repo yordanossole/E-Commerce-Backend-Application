@@ -88,7 +88,19 @@ public class CartItemService implements ICartItemService {
     }
 
     @Override
-    public CartItemDto converToDto(CartItem cartItem) {
+    public CartItemDto convertToDto(CartItem cartItem) {
         return modelMapper.map(cartItem, CartItemDto.class);
+//        CartItemDto cartItemDto = new CartItemDto();
+//        cartItemDto.setId(cartItem.getId());
+//        cartItemDto.setProduct(productService.convertToDto(cartItem.getProduct()));
+//        cartItemDto.setQuantity(cartItem.getQuantity());
+//        cartItemDto.setUnitPrice(cartItem.getUnitPrice());
+//        cartItemDto.setTotalPrice(cartItem.getTotalPrice());
+//        return cartItemDto;
     }
+//
+//    @Override
+//    public Set<CartItemDto> getCovertedCartItemDtos(Set<CartItem> cartItems) {
+//        return  cartItems.stream().map(cartItem -> converToDto(cartItem)).collect(Collectors.toCollection(HashSet::new));
+//    }
 }
