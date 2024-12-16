@@ -1,12 +1,13 @@
 package com.yordanos.dreamShops.repository;
 
-import com.yordanos.dreamShops.model.Order;
+import com.yordanos.dreamShops.model.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-public interface OrderRepository extends JpaRepository<Order, Long> {
-    List<Order> findByUserId(Long userId);
+public interface RoleRepository extends JpaRepository<Role, Long> {
+    Optional<Role> findByName(String role);
 }
