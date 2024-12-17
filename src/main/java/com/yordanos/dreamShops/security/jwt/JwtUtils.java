@@ -2,7 +2,6 @@ package com.yordanos.dreamShops.security.jwt;
 
 import com.yordanos.dreamShops.security.user.ShopUserDetails;
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import org.springframework.beans.factory.annotation.Value;

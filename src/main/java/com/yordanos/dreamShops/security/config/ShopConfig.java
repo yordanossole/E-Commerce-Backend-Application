@@ -31,7 +31,7 @@ public class ShopConfig {
     private final JwtAuthEntryPoint authEntryPoint;
     private final AuthTokenFilter authTokenFilter;
 
-    private static final List<String> SECURED_URLS = List.of("/apiiiii/v1/products/**");
+    private static final List<String> SECURED_URLS = List.of("/api/v1/carts/**", "/api/v1/cartItems/**", "/api/v1/orders/**", "/api/v1/users/user/**");
 //    private static final List<String> OPEN_URLS = List.of("/api/v1/products/**");
 
 
@@ -70,11 +70,12 @@ public class ShopConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth.requestMatchers(SECURED_URLS.toArray(String[]::new)).authenticated()
                         .anyRequest().permitAll());
-//                .authorizeHttpRequests(auth -> auth.requestMatchers(OPEN_URLS.toArray(String[]::new)).permitAll()
-//                        .anyRequest().authenticated());
-//                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
         httpSecurity.authenticationProvider(daoAuthenticationProvider());
         httpSecurity.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
     }
 }
+
+//    .authorizeHttpRequests(auth -> auth.requestMatchers(OPEN_URLS.toArray(String[]::new)).permitAll()
+//            .anyRequest().authenticated());
+//    .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());

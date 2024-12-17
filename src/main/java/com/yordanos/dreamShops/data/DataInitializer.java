@@ -64,11 +64,6 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
         }
     }
 
-//    @Override
-//    public boolean supportsAsyncExecution() {
-//        return ApplicationListener.super.supportsAsyncExecution();
-//    }
-
     private void createDefaultRoleIfNotExits(Set<String> roles) {
         roles.stream()
                 .filter(role -> roleRepository.findByName(role).isEmpty())

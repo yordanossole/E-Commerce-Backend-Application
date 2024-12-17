@@ -5,7 +5,6 @@ import com.yordanos.dreamShops.response.ApiResponse;
 import com.yordanos.dreamShops.response.JwtResponse;
 import com.yordanos.dreamShops.security.jwt.JwtUtils;
 import com.yordanos.dreamShops.security.user.ShopUserDetails;
-import com.yordanos.dreamShops.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -42,5 +41,4 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ApiResponse(e.getMessage(), "Invalid Email or Password."));
         }
     }
-
 }

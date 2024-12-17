@@ -23,8 +23,6 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 public class ProductController {
     private final IProductService productService;
 
-    // I wrote most of the paths by my self (I used my own naming).
-
     // this is for test
     @PostMapping("/add/all")
     public ResponseEntity<ApiResponse> addProducts(@RequestBody List<AddProductRequest> addProductRequest) {

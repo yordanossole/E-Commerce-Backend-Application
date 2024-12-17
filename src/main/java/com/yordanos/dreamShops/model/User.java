@@ -9,6 +9,7 @@ import org.hibernate.annotations.NaturalId;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -26,11 +27,11 @@ public class User {
     private String email;
     private String password;
 
-//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private Cart cart;
-//
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Order> orders;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Cart cart;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Order> orders;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade =
             {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
