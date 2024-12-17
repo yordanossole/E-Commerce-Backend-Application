@@ -9,6 +9,7 @@ import com.yordanos.dreamShops.response.ApiResponse;
 import com.yordanos.dreamShops.service.product.IProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,8 +22,6 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @RequestMapping("${api.prefix}/products")
 public class ProductController {
     private final IProductService productService;
-
-    // I wrote most of the paths by my self (I used my own naming).
 
     // this is for test
     @PostMapping("/add/all")
@@ -51,6 +50,7 @@ public class ProductController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/product/add")
     public ResponseEntity<ApiResponse> addProduct(@RequestBody AddProductRequest addProductRequest) {
         try {
@@ -63,6 +63,7 @@ public class ProductController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/product/update/{productId}")
     public ResponseEntity<ApiResponse> updateProduct(@PathVariable Long productId, @RequestBody ProductUpdateRequest productUpdateRequest) {
         try {
@@ -75,6 +76,7 @@ public class ProductController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/product/delete/{productId}")
     public ResponseEntity<ApiResponse> deleteProduct(@PathVariable Long productId) {
         try {

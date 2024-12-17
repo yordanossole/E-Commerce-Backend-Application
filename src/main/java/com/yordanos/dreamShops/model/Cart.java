@@ -19,7 +19,7 @@ public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private BigDecimal totalAmount = BigDecimal.ZERO;
+    private BigDecimal cartPrice = BigDecimal.ZERO;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<CartItem> items = new HashSet<>();
@@ -31,17 +31,17 @@ public class Cart {
     public void addItem(CartItem item) {
         item.setCart(this);
         this.items.add(item);
-        updateTotalAmount();
+        updateCartPrice();
     }
 
     public void removeItem(CartItem item) {
-        item.setCart(null);
         this.items.remove(item);
-        updateTotalAmount();
+        item.setCart(null);
+        updateCartPrice();
     }
 
-    private void updateTotalAmount() {
-        this.totalAmount = items.stream().map(item -> {
+    private void updateCartPrice() {
+        this.cartPrice = items.stream().map(item -> {
             BigDecimal unitPrice = item.getUnitPrice();
             if (unitPrice == null) {
                 return BigDecimal.ZERO;

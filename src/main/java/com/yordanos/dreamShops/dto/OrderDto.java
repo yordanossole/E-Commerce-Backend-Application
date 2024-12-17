@@ -8,10 +8,10 @@ import java.util.List;
 
 @Data
 public class OrderDto {
-    private Long orderId; // it was initially 'id'
+    private Long orderId;
     private Long userId;
-    private LocalDateTime orderDate; // it was initially LocalDate
+    private LocalDateTime orderDate;
     private BigDecimal totalAmount;
-    private String orderStatus; // I wanted it to be OrderStatus, orderStatus
+    private String orderStatus;
     private List<OrderItemDto> items;
 }

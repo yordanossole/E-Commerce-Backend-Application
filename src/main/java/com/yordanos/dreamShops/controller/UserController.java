@@ -10,6 +10,7 @@ import com.yordanos.dreamShops.response.ApiResponse;
 import com.yordanos.dreamShops.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.HttpStatus.CONFLICT;
@@ -21,9 +22,11 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/{userId}/user")
-    public ResponseEntity<ApiResponse> getUserById(@PathVariable Long userId) {
+    @GetMapping("/user")
+    public ResponseEntity<ApiResponse> getUser() {
         try {
+            String username = SecurityContextHolder.getContext().getAuthentication().getName();
+            Long userId = userService.getUserByUsername(username);
             User user = userService.getUserById(userId);
             UserDto userDto = userService.convertUserToDto(user);
             return ResponseEntity.ok(new ApiResponse("Success", userDto));
@@ -43,9 +46,13 @@ public class UserController {
         }
     }
 
-    @PutMapping("/{userId}/update")
-    public ResponseEntity<ApiResponse> updateUser(@RequestBody UpdateUserRequest request, @PathVariable Long userId) {
+    @PutMapping("/user/update")
+    public ResponseEntity<ApiResponse> updateUser(@RequestBody UpdateUserRequest request, @RequestParam(required = false) Long userId) {
         try {
+            if (userId == null) {
+                String username = SecurityContextHolder.getContext().getAuthentication().getName();
+                userId = userService.getUserByUsername(username);
+            }
             User user = userService.updateUser(request, userId);
             UserDto userDto = userService.convertUserToDto(user);
             return ResponseEntity.ok(new ApiResponse("Update User Success!", userDto));
@@ -54,9 +61,13 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/{userId}/delete")
-    public ResponseEntity<ApiResponse> deleteUser(@PathVariable Long userId) {
+    @DeleteMapping("/user/delete")
+    public ResponseEntity<ApiResponse> deleteUser(@RequestParam(required = false) Long userId) {
         try {
+            if (userId == null) {
+                String username = SecurityContextHolder.getContext().getAuthentication().getName();
+                userId = userService.getUserByUsername(username);
+            }
             userService.deleteUser(userId);
             return ResponseEntity.ok(new ApiResponse("Delete User Success!", null));
         } catch (ResourceNotFoundException e) {

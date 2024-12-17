@@ -39,7 +39,6 @@ public class OrderController {
         }
     }
 
-    // it was "/{userId}/order" but I think that it would create conflict with the above api
     @GetMapping("/user/{userId}/order")
     public ResponseEntity<ApiResponse> getUserOrders(@PathVariable Long userId) {
         try {

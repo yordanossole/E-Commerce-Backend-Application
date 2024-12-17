@@ -8,6 +8,7 @@ import com.yordanos.dreamShops.service.image.IImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,6 +23,7 @@ import static org.springframework.http.HttpStatus.*;
 public class ImageController {
     private final IImageService imageService;
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/upload")
     public ResponseEntity<ApiResponse> saveImages (@RequestParam Long productId, @RequestParam List<MultipartFile> files) {
         try {
@@ -45,6 +47,7 @@ public class ImageController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/image/{imageId}/update")
     public ResponseEntity<ApiResponse> updateImage(@PathVariable Long imageId, @RequestParam MultipartFile file) {
         try {
@@ -61,6 +64,7 @@ public class ImageController {
         return ResponseEntity.status(NOT_FOUND).body(new ApiResponse("Update failed!", NOT_FOUND));
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/image/{imageId}/delete")
     public ResponseEntity<ApiResponse> deleteImage(@PathVariable Long imageId) {
         try {

@@ -8,6 +8,7 @@ import java.util.Set;
 @Data
 public class CartDto {
     private Long cartId;
+    private BigDecimal totalCartPrice;
     private Set<CartItemDto> items;
-    private BigDecimal totalAmount;
+    private Long userId;
 }

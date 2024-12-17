@@ -39,7 +39,6 @@ public class CategoryController {
         }
     }
 
-    // former: /category/{id}/category
     @GetMapping("/category/id/{id}")
     public ResponseEntity<ApiResponse> getCategoryById(@PathVariable Long id) {
         try {
@@ -50,7 +49,6 @@ public class CategoryController {
         }
     }
 
-    // former: "/{name}/category"
     @GetMapping("/category/name/{name}")
     public ResponseEntity<ApiResponse> getCategoryByName(@PathVariable String name) {
         try{
@@ -64,7 +62,6 @@ public class CategoryController {
         }
     }
 
-    // former: "/category/{id}/delete"
     @DeleteMapping("/category/delete/{id}")
     public ResponseEntity<ApiResponse> deleteCategory(@PathVariable Long id) {
         try {

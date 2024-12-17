@@ -9,10 +9,12 @@ import com.yordanos.dreamShops.repository.CartItemRepository;
 import com.yordanos.dreamShops.repository.CartRepository;
 import com.yordanos.dreamShops.service.product.IProductService;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +23,6 @@ public class CartItemService implements ICartItemService {
     private final CartRepository cartRepository;
     private final IProductService productService;
     private final ICartService cartService;
-    private final ModelMapper modelMapper;
 
     @Override
     public CartItem addItemToCart(Long cartId, Long productId, int quantity) {
@@ -44,8 +45,7 @@ public class CartItemService implements ICartItemService {
 
         cartItem.setTotalPrice();
         cart.addItem(cartItem);
-        cartRepository.save(cart);
-        return cartItemRepository.save(cartItem);
+        return cartRepository.save(cart).getItems().stream().filter(item -> item.getProduct().getId().equals(productId)).findFirst().orElse(null);
     }
 
     @Override
@@ -65,42 +65,42 @@ public class CartItemService implements ICartItemService {
                 .findFirst().orElseThrow(() -> new ResourceNotFoundException("Item not found"));
     }
 
-
     @Override
-    public void updateItemQuantity(Long cartId, Long productId, int quantity) {
+    public CartItem updateItemQuantity(Long cartId, Long productId, int quantity) {
         Cart cart = cartService.getCart(cartId);
         cart.getItems()
                 .stream()
                 .filter(item -> item.getProduct().getId().equals(productId))
                 .findFirst()
-                .ifPresent(item -> {
+                .ifPresentOrElse(item -> {
                     item.setQuantity(quantity);
                     item.setUnitPrice(item.getProduct().getPrice());
                     item.setTotalPrice();
-                });
+                }, () -> new ResourceNotFoundException("Product with id: " + productId + " or cart with id: " + cartId + " not found"));
 
         BigDecimal totalAmount = cart.getItems()
                 .stream().map(CartItem::getTotalPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        cart.setTotalAmount(totalAmount);
-        cartRepository.save(cart);
+        cart.setCartPrice(totalAmount);
+        return cartRepository.save(cart).getItems().stream().filter(item -> item.getProduct().getId().equals(productId)).findFirst().orElseThrow(() -> new ResourceNotFoundException("Cart Item not found"));
     }
 
     @Override
     public CartItemDto convertToDto(CartItem cartItem) {
-        return modelMapper.map(cartItem, CartItemDto.class);
-//        CartItemDto cartItemDto = new CartItemDto();
-//        cartItemDto.setId(cartItem.getId());
-//        cartItemDto.setProduct(productService.convertToDto(cartItem.getProduct()));
-//        cartItemDto.setQuantity(cartItem.getQuantity());
-//        cartItemDto.setUnitPrice(cartItem.getUnitPrice());
-//        cartItemDto.setTotalPrice(cartItem.getTotalPrice());
-//        return cartItemDto;
+        CartItemDto cartItemDto = new CartItemDto();
+
+        cartItemDto.setItemId(cartItem.getId());
+        cartItemDto.setProduct(productService.convertToDto(cartItem.getProduct()));
+        cartItemDto.setQuantity(cartItem.getQuantity());
+        cartItemDto.setUnitPrice(cartItem.getUnitPrice());
+        cartItemDto.setTotalPrice(cartItem.getTotalPrice());
+        cartItemDto.setCartId(cartItem.getCart().getId());
+        return cartItemDto;
     }
-//
-//    @Override
-//    public Set<CartItemDto> getCovertedCartItemDtos(Set<CartItem> cartItems) {
-//        return  cartItems.stream().map(cartItem -> converToDto(cartItem)).collect(Collectors.toCollection(HashSet::new));
-//    }
+
+    @Override
+    public Set<CartItemDto> getCovertedCartItemDtos(Set<CartItem> cartItems) {
+        return  cartItems.stream().map(cartItem -> convertToDto(cartItem)).collect(Collectors.toCollection(HashSet::new));
+    }
 }
