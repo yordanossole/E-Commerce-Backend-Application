@@ -30,7 +30,7 @@ DreamShops is a simple, robust, and extensible backend API for an e-commerce pla
 
 1. **Clone the repository:**
    ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/yordanossole/E-Commerce-Backend-Application
    cd E-Commerce-Backend-Application
    ```
 2. **Configure MySQL:**
